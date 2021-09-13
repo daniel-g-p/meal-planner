@@ -1,26 +1,33 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <main class="section">
+    <base-header></base-header>
+    <div class="columns">
+      <user-form></user-form>
+      <nutrient-requirements></nutrient-requirements>
+    </div>
+    <meal-list></meal-list>
+  </main>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import BaseHeader from "./components/BaseHeader.vue";
+import UserForm from "./components/UserForm.vue";
+import NutrientRequirements from "./components/NutrientRequirements.vue";
+import MealList from "./components/MealList.vue";
 
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    HelloWorld
-  }
-}
+    "base-header": BaseHeader,
+    "user-form": UserForm,
+    "nutrient-requirements": NutrientRequirements,
+    "meal-list": MealList,
+  },
+};
 </script>
 
 <style lang="scss">
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+svg {
+  fill: currentColor;
 }
 </style>
