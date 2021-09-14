@@ -1,7 +1,7 @@
 <template>
   <div class="block">
     <span class="icon-text pb-2">
-      <span class="icon">
+      <span class="icon my-help-icon">
         <svg viewBox="0 0 16 16">
           <path
             d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"
@@ -63,6 +63,12 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+  }
+}
+.my-help-icon {
+  &:hover {
+    color: #00d1b2;
+    cursor: pointer;
   }
 }
 </style>

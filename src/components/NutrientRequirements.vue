@@ -2,8 +2,15 @@
   <section class="column">
     <div class="box">
       <h2 class="title has-text-primary">Your Requirements</h2>
+      <div class="container">
+        <progress-bar
+          nutrientName="Calories"
+          v-bind:nutrientPercentage="caloriePercentage"
+        ></progress-bar>
+      </div>
+      <div class="container pt-1 my-5 has-background-light"></div>
       <progress-bar
-        v-for="nutrient in nutrients"
+        v-for="nutrient in macronutrients"
         v-bind:key="nutrient.name"
         v-bind:nutrientName="nutrient.name"
         v-bind:nutrientPercentage="nutrient.percentage"
@@ -24,11 +31,12 @@ export default {
   },
   data() {
     return {
-      nutrients: [
+      macronutrients: [
         { name: "Carbohydrates", percentage: 0 },
         { name: "Fats", percentage: 0 },
         { name: "Proteins", percentage: 0 },
       ],
+      caloriePercentage: 59,
     };
   },
 };
