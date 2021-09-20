@@ -1,12 +1,20 @@
 STEP 1: BASAL METABOLIC RATE
 
-    WOMEN   ->      BMR = 655.1 + 9.563 * WEIGHT IN KG + 1.85 * HEIGHT IN CM + 4.676 * AGE IN YEARS
-    MEN     ->      BMR = 66.47 + 13.75 * WEIGHT IN KG + 5.003 * HEIGHT IN CM + 6.755 * AGE IN YEARS
+    WOMEN   ->   BMR = 655.1 + 9.563 * WEIGHT IN KG + 1.85 * HEIGHT IN CM - 4.676 * AGE IN YEARS
+    MEN     ->   BMR = 66.47 + 13.75 * WEIGHT IN KG + 5.003 * HEIGHT IN CM - 6.755 * AGE IN YEARS
 
-STEP 2: ACTIVE METABOLIC RATE
+STEP 2: CALORIC INTAKE
 
-    NONE        ->      AMR = BMR * 1.2
-    LIGHT       ->      AMR = BMR * 1.375
-    MODERATE    ->      AMR = BMR * 1.55
-    ACTIVE      ->      AMR = BMR * 1.725
-    INTENSE     ->      AMR = BMR * 1.9
+    NONE       ->   CI = BMR * 1.2
+    LIGHT      ->   CI = BMR * 1.375
+    MODERATE   ->   CI = BMR * 1.55
+    ACTIVE     ->   CI = BMR * 1.725
+    INTENSE    ->   CI = BMR * 1.9
+
+STEP 3: ADJUSTED CALORIC INTAKE
+
+    WEIGHT LOSS          ->   ACI = CI * 0.9
+    WEIGHT MAINTENANCE   ->   ACI = CI 
+    WEIGHT GAIN          ->   ACI = CI * 1.1
+
+STEP 4: 

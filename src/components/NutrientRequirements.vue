@@ -1,22 +1,24 @@
 <template>
-  <section class="column">
-    <div class="box">
-      <h2 class="title has-text-primary">Your Requirements</h2>
-      <div class="container">
-        <progress-bar
-          nutrientName="Calories"
-          v-bind:nutrientPercentage="caloriePercentage"
-        ></progress-bar>
-      </div>
-      <div class="container pt-1 my-5 has-background-light"></div>
+  <section class="box" ref="myNutrientRequirements" id="myNutrientRequirements">
+    <h2 class="title has-text-primary">Your Daily Intake</h2>
+    <div class="container">
       <progress-bar
-        v-for="nutrient in macronutrients"
-        v-bind:key="nutrient.name"
-        v-bind:nutrientName="nutrient.name"
-        v-bind:nutrientPercentage="nutrient.percentage"
+        nutrient-name="Calories"
+        v-bind:nutrient-required="caloriesRequired"
+        v-bind:nutrient-actual="caloriesActual"
+        nutrient-unit="cal"
       ></progress-bar>
-      <nutrient-legend></nutrient-legend>
     </div>
+    <div class="container pt-1 my-5 has-background-light"></div>
+    <progress-bar
+      v-for="nutrient in macronutrients"
+      v-bind:key="nutrient.name"
+      v-bind:nutrient-name="nutrient.name"
+      v-bind:nutrient-required="nutrient.required"
+      v-bind:nutrient-actual="nutrient.actual"
+      v-bind:nutrient-unit="nutrient.unit"
+    ></progress-bar>
+    <nutrient-legend></nutrient-legend>
   </section>
 </template>
 
@@ -29,15 +31,40 @@ export default {
     "progress-bar": ProgressBar,
     "nutrient-legend": NutrientLegend,
   },
+  props: {
+    caloriesRequired: Number,
+    caloriesActual: Number,
+  },
   data() {
     return {
       macronutrients: [
-        { name: "Carbohydrates", percentage: 0 },
-        { name: "Fats", percentage: 0 },
-        { name: "Proteins", percentage: 0 },
+        { name: "Carbohydrates", required: 0, actual: 0, unit: "g" },
+        { name: "Fats", required: 0, actual: 0, unit: "g" },
+        { name: "Proteins", required: 0, actual: 0, unit: "g" },
       ],
-      caloriePercentage: 59,
     };
+  },
+  methods: {
+    setNutrientRequirements(nutrientName, proportion) {
+      const nutrient = this.macronutrients.find(
+        (nutrient) => nutrient.name === nutrientName
+      );
+      nutrient.required = Math.round(this.caloriesRequired * proportion);
+    },
+  },
+  watch: {
+    caloriesRequired() {
+      this.$refs.myNutrientRequirements.scrollIntoView({ behavior: "smooth" });
+      this.setNutrientRequirements("Carbohydrates", 0.55);
+      this.setNutrientRequirements("Fats", 0.25);
+      this.setNutrientRequirements("Proteins", 0.2);
+    },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+#myNutrientRequirements {
+  scroll-margin-top: 1rem;
+}
+</style>

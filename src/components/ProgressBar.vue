@@ -14,6 +14,9 @@
       <span class="has-text-weight-bold">{{ nutrientName }}</span>
     </span>
     <div class="my-progress-bar">
+      <div class="my-progress-bar__value is-size-6 has-text-weight-bold">
+        {{ progressBarLabel }}
+      </div>
       <progress
         class="progress"
         v-bind:class="progressBarClass"
@@ -28,12 +31,22 @@
 export default {
   props: {
     nutrientName: String,
-    nutrientPercentage: Number,
+    nutrientRequired: Number,
+    nutrientActual: Number,
+    nutrientUnit: String,
   },
   computed: {
     progressBarValue() {
-      let value = this.nutrientPercentage / 2;
-      return value > 5 ? value : 5;
+      if (!this.nutrientRequired) {
+        return 0;
+      }
+      const proportion = Math.round(
+        (100 * this.nutrientActual) / this.nutrientRequired
+      );
+      return proportion > 10 ? proportion / 2 : 5;
+    },
+    progressBarLabel() {
+      return this.nutrientRequired ? `${this.nutrientActual} / ${this.nutrientRequired} (${this.nutrientUnit})` : "?";
     },
     progressBarClass() {
       const difference = Math.abs(this.progressBarValue - 50);
@@ -55,7 +68,7 @@ export default {
   &::after {
     content: "";
     display: block;
-    background-color: black;
+    background-color: #4a4a4a;
     width: 4px;
     height: calc(100% + 8px);
     border-radius: 2px;
@@ -64,10 +77,16 @@ export default {
     left: 50%;
     transform: translate(-50%, -50%);
   }
+  &__value {
+    position: absolute;
+    left: 50%;
+    top: -2rem;
+    transform: translateX(-50%);
+  }
 }
 .my-help-icon {
   &:hover {
-    color: #00d1b2;
+    color: #b5b5b5;
     cursor: pointer;
   }
 }

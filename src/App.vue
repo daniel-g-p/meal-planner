@@ -1,10 +1,12 @@
 <template>
-  <main class="section">
+  <main class="section container is-max-desktop">
     <base-header></base-header>
-    <div class="columns">
-      <user-form></user-form>
-      <nutrient-requirements></nutrient-requirements>
-    </div>
+    <user-form v-on:set-values="setValues"></user-form>
+    <nutrient-requirements
+      v-bind:calories-required="caloriesRequired"
+      v-bind:calories-actual="caloriesActual"
+      ref="myNutrientRequirements"
+    ></nutrient-requirements>
     <meal-list></meal-list>
   </main>
 </template>
@@ -22,6 +24,17 @@ export default {
     "user-form": UserForm,
     "nutrient-requirements": NutrientRequirements,
     "meal-list": MealList,
+  },
+  data() {
+    return {
+      caloriesRequired: 0,
+      caloriesActual: 0,
+    };
+  },
+  methods: {
+    setValues(caloriesRequired) {
+      this.caloriesRequired = Math.round(caloriesRequired);
+    },
   },
 };
 </script>

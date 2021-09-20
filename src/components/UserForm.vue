@@ -1,7 +1,11 @@
 <template>
-  <section class="column">
+  <section class="box" ref="myUserForm" id="myUserForm">
+    <div v-if="formError" class="notification">
+      <button class="delete" v-on:click="closeErrorMessage"></button>
+      Please fill in all form fields
+    </div>
     <form
-      class="box is-flex is-flex-direction-column"
+      class="is-flex is-flex-direction-column"
       v-on:submit.prevent="submit"
     >
       <h2 class="title has-text-primary">About You</h2>
@@ -12,12 +16,22 @@
         <div class="field-body">
           <div class="field is-flex is-align-items-center">
             <div class="control">
-              <label class="radio">
-                <input type="radio" name="gender" />
+              <label class="radio" v-bind:class="genderClass">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="female"
+                  v-model="gender"
+                />
                 Female
               </label>
-              <label class="radio">
-                <input type="radio" name="gender" />
+              <label class="radio" v-bind:class="genderClass">
+                <input
+                  type="radio"
+                  name="gender"
+                  value="male"
+                  v-model="gender"
+                />
                 Male
               </label>
             </div>
@@ -31,7 +45,12 @@
         <div class="field-body">
           <div class="field">
             <p class="control">
-              <input class="input is-primary" type="number" />
+              <input
+                class="input"
+                v-bind:class="ageClass"
+                type="number"
+                v-model="age"
+              />
             </p>
           </div>
         </div>
@@ -41,9 +60,14 @@
           <label class="label">Height</label>
         </div>
         <div class="field-body">
-          <div class="field">
+          <div class="field my-unit-input my-unit-input--height">
             <p class="control">
-              <input class="input is-primary" type="number" />
+              <input
+                class="input"
+                v-bind:class="heightClass"
+                type="number"
+                v-model="height"
+              />
             </p>
           </div>
         </div>
@@ -53,38 +77,68 @@
           <label class="label">Weight</label>
         </div>
         <div class="field-body">
-          <div class="field">
+          <div class="field my-unit-input my-unit-input--weight">
             <p class="control">
-              <input class="input is-primary" type="number" />
+              <input
+                class="input"
+                v-bind:class="weightClass"
+                type="number"
+                v-model="weight"
+              />
             </p>
           </div>
         </div>
       </div>
       <div class="field is-horizontal">
         <div class="field-label is-normal pt-0">
-          <label class="label">Level of Activity</label>
+          <label class="label">Physical Activity</label>
         </div>
         <div class="field-body">
           <div class="field is-flex is-align-items-center">
             <div class="control">
-              <label class="radio">
-                <input type="radio" name="activity" />
+              <label class="radio" v-bind:class="activityClass">
+                <input
+                  type="radio"
+                  name="activity"
+                  value="none"
+                  v-model="activity"
+                />
                 None
               </label>
-              <label class="radio">
-                <input type="radio" name="activity" />
+              <label class="radio" v-bind:class="activityClass">
+                <input
+                  type="radio"
+                  name="activity"
+                  value="light"
+                  v-model="activity"
+                />
                 Light
               </label>
-              <label class="radio">
-                <input type="radio" name="activity" />
+              <label class="radio" v-bind:class="activityClass">
+                <input
+                  type="radio"
+                  name="activity"
+                  value="moderate"
+                  v-model="activity"
+                />
                 Moderate
               </label>
-              <label class="radio">
-                <input type="radio" name="activity" />
+              <label class="radio" v-bind:class="activityClass">
+                <input
+                  type="radio"
+                  name="activity"
+                  value="active"
+                  v-model="activity"
+                />
                 Active
               </label>
-              <label class="radio">
-                <input type="radio" name="activity" />
+              <label class="radio" v-bind:class="activityClass">
+                <input
+                  type="radio"
+                  name="activity"
+                  value="intense"
+                  v-model="activity"
+                />
                 Intense
               </label>
             </div>
@@ -98,17 +152,22 @@
         <div class="field-body">
           <div class="field is-flex is-align-items-center">
             <div class="control">
-              <label class="radio">
-                <input type="radio" name="goal" />
-                Lose Weight
+              <label class="radio" v-bind:class="goalClass">
+                <input type="radio" name="goal" value="lose" v-model="goal" />
+                Lose
               </label>
-              <label class="radio">
-                <input type="radio" name="goal" />
-                Maintain Weight
+              <label class="radio" v-bind:class="goalClass">
+                <input
+                  type="radio"
+                  name="goal"
+                  value="maintain"
+                  v-model="goal"
+                />
+                Maintain
               </label>
-              <label class="radio">
-                <input type="radio" name="goal" />
-                Gain Weight
+              <label class="radio" v-bind:class="goalClass">
+                <input type="radio" name="goal" value="gain" v-model="goal" />
+                Gain
               </label>
             </div>
           </div>
@@ -123,73 +182,173 @@
 
 <script>
 export default {
+  emits: ["set-values"],
   data() {
     return {
-      gender: "male",
-      age: 19,
-      height: 186,
-      weight: 75,
-      activity: "active",
-      goal: "maintain",
+      gender: "",
+      age: "",
+      height: "",
+      weight: "",
+      activity: "",
+      goal: "",
+      initialized: {
+        gender: false,
+        age: false,
+        height: false,
+        weight: false,
+        activity: false,
+        goal: false,
+      },
+      formError: false,
     };
+  },
+  computed: {
+    genderClass() {
+      return this.initialized.gender && !this.gender ? "has-text-danger" : "";
+    },
+    ageClass() {
+      return this.initialized.age && !this.age ? "is-danger" : "";
+    },
+    heightClass() {
+      return this.initialized.height && !this.height ? "is-danger" : "";
+    },
+    weightClass() {
+      return this.initialized.weight && !this.weight ? "is-danger" : "";
+    },
+    activityClass() {
+      return this.initialized.activity && !this.activity
+        ? "has-text-danger"
+        : "";
+    },
+    goalClass() {
+      return this.initialized.goal && !this.goal ? "has-text-danger" : "";
+    },
   },
   methods: {
     submit() {
-      let basalMetabolicRate;
-      switch (this.gender) {
+      if (
+        !this.gender ||
+        !this.age ||
+        !this.height ||
+        !this.weight ||
+        !this.activity ||
+        !this.goal
+      ) {
+        this.formError = true;
+        this.$refs.myUserForm.scrollIntoView({ behavior: "smooth" });
+        return;
+      }
+      this.closeErrorMessage();
+      const bmr = this.calculateBMR(this.gender);
+      const amr = this.calculateAMR(bmr, this.activity);
+      const caloricIntake = this.calculateCaloricIntake(amr, this.goal);
+      this.$emit("set-values", caloricIntake);
+    },
+    closeErrorMessage() {
+      this.formError = false;
+    },
+    calculateBMR(gender) {
+      switch (gender) {
         case "female":
-          basalMetabolicRate =
-            655.1 + 9.563 * this.weight + 1.85 * this.height + 4.676 * this.age;
-          break;
+          return 10 * this.weight + 6.25 * this.height - 5 * this.age - 161;
         case "male":
-          basalMetabolicRate =
-            66.47 +
-            13.75 * this.weight +
-            5.003 * this.height +
-            6.755 * this.age;
-          break;
+          return 10 * this.weight + 6.25 * this.height - 5 * this.age + 5;
         default:
-          basalMetabolicRate = undefined;
-          break;
+          return;
       }
-      let activeMetabolicRate;
-      switch (this.activity) {
+    },
+    calculateAMR(bmr, activityLevel) {
+      switch (activityLevel) {
         case "none":
-          activeMetabolicRate = basalMetabolicRate * 1.2;
-          break;
+          return bmr * 1.2;
         case "light":
-          activeMetabolicRate = basalMetabolicRate * 1.375;
-          break;
+          return bmr * 1.375;
         case "moderate":
-          activeMetabolicRate = basalMetabolicRate * 1.55;
-          break;
+          return bmr * 1.55;
         case "active":
-          activeMetabolicRate = basalMetabolicRate * 1.725;
-          break;
+          return bmr * 1.725;
         case "intense":
-          activeMetabolicRate = basalMetabolicRate * 1.9;
-          break;
+          return bmr * 1.9;
         default:
-          activeMetabolicRate = undefined;
-          break;
+          return;
       }
-      let caloricIntake;
-      switch (this.goal) {
-        case "lose":
-          caloricIntake = activeMetabolicRate * 0.9;
-          break;
+    },
+    calculateCaloricIntake(amr, weightGoal) {
+      switch (weightGoal) {
         case "maintain":
-          caloricIntake = activeMetabolicRate * 1;
-          break;
+          return amr;
+        case "lose":
+          return amr * 0.9;
         case "gain":
-          caloricIntake = activeMetabolicRate * 1.1;
-          break;
+          return amr * 1.1;
         default:
-          caloricIntake = undefined;
-          break;
+          return;
       }
-      console.log(caloricIntake);
+    },
+  },
+  watch: {
+    gender() {
+      if (!this.initialized.gender) {
+        this.initialized.gender = true;
+      }
+    },
+    age() {
+      if (!this.initialized.age) {
+        this.initialized.age = true;
+      }
+    },
+    height() {
+      if (!this.initialized.height) {
+        this.initialized.height = true;
+      }
+    },
+    weight() {
+      if (!this.initialized.weight) {
+        this.initialized.weight = true;
+      }
+    },
+    activity() {
+      if (!this.initialized.activity) {
+        this.initialized.activity = true;
+      }
+    },
+    goal() {
+      if (!this.initialized.goal) {
+        this.initialized.goal = true;
+      }
     },
   },
 };
 </script>
+
+<style lang="scss" scoped>
+.radio {
+  & + .radio {
+    margin-left: 0;
+  }
+  &:not(:last-child) {
+    margin-right: 1rem;
+  }
+}
+.my-unit-input {
+  position: relative;
+  input {
+    padding-left: 2rem;
+  }
+  &::after {
+    position: absolute;
+    left: 0.5rem;
+    top: 0.5em;
+    color: #dbdbdb;
+  }
+  &--height::after {
+    content: "cm";
+  }
+  &--weight::after {
+    content: "kg";
+  }
+}
+#myUserForm {
+  scroll-margin-top: 1rem;
+}
+</style>
