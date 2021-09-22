@@ -11,12 +11,9 @@
           />
         </svg>
       </span>
-      <span class="has-text-weight-bold">{{ nutrientName }}</span>
+      <span class="has-text-weight-bold">{{ nutrientName }}: {{ progressBarLabel }}</span>
     </span>
     <div class="my-progress-bar">
-      <div class="my-progress-bar__value is-size-6 has-text-weight-bold">
-        {{ progressBarLabel }}
-      </div>
       <progress
         class="progress"
         v-bind:class="progressBarClass"
@@ -46,7 +43,7 @@ export default {
       return proportion > 10 ? proportion / 2 : 5;
     },
     progressBarLabel() {
-      return this.nutrientRequired ? `${this.nutrientActual} / ${this.nutrientRequired} (${this.nutrientUnit})` : "?";
+      return this.nutrientRequired ? `${this.nutrientActual} / ${this.nutrientRequired}${this.nutrientUnit}` : "?";
     },
     progressBarClass() {
       const difference = Math.abs(this.progressBarValue - 50);
@@ -76,12 +73,6 @@ export default {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-  }
-  &__value {
-    position: absolute;
-    left: 50%;
-    top: -2rem;
-    transform: translateX(-50%);
   }
 }
 .my-help-icon {

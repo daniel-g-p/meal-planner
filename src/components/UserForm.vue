@@ -4,10 +4,7 @@
       <button class="delete" v-on:click="closeErrorMessage"></button>
       Please fill in all form fields
     </div>
-    <form
-      class="is-flex is-flex-direction-column"
-      v-on:submit.prevent="submit"
-    >
+    <form class="is-flex is-flex-direction-column" v-on:submit.prevent="submit">
       <h2 class="title has-text-primary">About You</h2>
       <div class="field is-horizontal">
         <div class="field-label is-normal pt-0">
@@ -90,58 +87,26 @@
         </div>
       </div>
       <div class="field is-horizontal">
-        <div class="field-label is-normal pt-0">
+        <div class="field-label is-normal">
           <label class="label">Physical Activity</label>
         </div>
         <div class="field-body">
-          <div class="field is-flex is-align-items-center">
-            <div class="control">
-              <label class="radio" v-bind:class="activityClass">
-                <input
-                  type="radio"
-                  name="activity"
-                  value="none"
-                  v-model="activity"
-                />
-                None
-              </label>
-              <label class="radio" v-bind:class="activityClass">
-                <input
-                  type="radio"
-                  name="activity"
-                  value="light"
-                  v-model="activity"
-                />
-                Light
-              </label>
-              <label class="radio" v-bind:class="activityClass">
-                <input
-                  type="radio"
-                  name="activity"
-                  value="moderate"
-                  v-model="activity"
-                />
-                Moderate
-              </label>
-              <label class="radio" v-bind:class="activityClass">
-                <input
-                  type="radio"
-                  name="activity"
-                  value="active"
-                  v-model="activity"
-                />
-                Active
-              </label>
-              <label class="radio" v-bind:class="activityClass">
-                <input
-                  type="radio"
-                  name="activity"
-                  value="intense"
-                  v-model="activity"
-                />
-                Intense
-              </label>
-            </div>
+          <div class="select my-select">
+            <select v-model="activity">
+              <option value="none">Sedentary (little to no exercise)</option>
+              <option value="light"
+                >Light (exercise 1 to 3 times a week)</option
+              >
+              <option value="moderate"
+                >Moderate (exercise 4 to 5 times a week)</option
+              >
+              <option value="active"
+                >Active (exercise 6 to 7 times a week)</option
+              >
+              <option value="intense"
+                >Intense (physical job or intense exercise daily)</option
+              >
+            </select>
           </div>
         </div>
       </div>
@@ -348,6 +313,14 @@ export default {
     content: "kg";
   }
 }
+
+.my-select {
+  width: 100%;
+  select {
+    width: 100%;
+  }
+}
+
 #myUserForm {
   scroll-margin-top: 1rem;
 }

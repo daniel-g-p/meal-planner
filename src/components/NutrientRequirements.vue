@@ -45,25 +45,33 @@ export default {
     };
   },
   methods: {
-    setNutrientRequirements(nutrientName, proportion) {
+    setNutrientRequirements(nutrientName, proportion, caloriesPerGram) {
       const nutrient = this.macronutrients.find(
         (nutrient) => nutrient.name === nutrientName
       );
-      nutrient.required = Math.round(this.caloriesRequired * proportion);
+      nutrient.required = Math.round(this.caloriesRequired * proportion / caloriesPerGram);
     },
   },
   watch: {
     caloriesRequired() {
-      this.$refs.myNutrientRequirements.scrollIntoView({ behavior: "smooth" });
-      this.setNutrientRequirements("Carbohydrates", 0.55);
-      this.setNutrientRequirements("Fats", 0.25);
-      this.setNutrientRequirements("Proteins", 0.2);
+      this.setNutrientRequirements("Carbohydrates", 0.55, 4);
+      this.setNutrientRequirements("Fats", 0.25, 9);
+      this.setNutrientRequirements("Proteins", 0.2, 4);
+      setTimeout(() => {
+        this.$refs.myNutrientRequirements.scrollIntoView({
+          behavior: "smooth",
+        });
+      }, 250);
     },
   },
 };
 </script>
 
 <style lang="scss" scoped>
+.my-progress-bar {
+  transition: width 1s ease;
+}
+
 #myNutrientRequirements {
   scroll-margin-top: 1rem;
 }
