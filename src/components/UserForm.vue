@@ -1,40 +1,18 @@
 <template>
   <section class="box" ref="myUserForm" id="myUserForm">
-    <div v-if="formError" class="notification">
-      <button class="delete" v-on:click="closeErrorMessage"></button>
+    <notification-box
+      v-if="formError"
+      v-on:close-notification="closeErrorMessage"
+    >
       Please fill in all form fields
-    </div>
+    </notification-box>
     <form class="is-flex is-flex-direction-column" v-on:submit.prevent="submit">
       <h2 class="title has-text-primary">About You</h2>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal pt-0">
-          <label class="label">Gender</label>
-        </div>
-        <div class="field-body">
-          <div class="field is-flex is-align-items-center">
-            <div class="control">
-              <label class="radio" v-bind:class="genderClass">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="female"
-                  v-model="gender"
-                />
-                Female
-              </label>
-              <label class="radio" v-bind:class="genderClass">
-                <input
-                  type="radio"
-                  name="gender"
-                  value="male"
-                  v-model="gender"
-                />
-                Male
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
+      <radio-field
+        field-name="Gender"
+        v-bind:field-options="['Female', 'Male']"
+        v-model="gender"
+      ></radio-field>
       <div class="field is-horizontal">
         <div class="field-label is-normal">
           <label class="label">Age</label>
@@ -110,34 +88,11 @@
           </div>
         </div>
       </div>
-      <div class="field is-horizontal">
-        <div class="field-label is-normal pt-0">
-          <label class="label">Weight Goal</label>
-        </div>
-        <div class="field-body">
-          <div class="field is-flex is-align-items-center">
-            <div class="control">
-              <label class="radio" v-bind:class="goalClass">
-                <input type="radio" name="goal" value="lose" v-model="goal" />
-                Lose
-              </label>
-              <label class="radio" v-bind:class="goalClass">
-                <input
-                  type="radio"
-                  name="goal"
-                  value="maintain"
-                  v-model="goal"
-                />
-                Maintain
-              </label>
-              <label class="radio" v-bind:class="goalClass">
-                <input type="radio" name="goal" value="gain" v-model="goal" />
-                Gain
-              </label>
-            </div>
-          </div>
-        </div>
-      </div>
+      <radio-field
+        field-name="Weight Goal"
+        v-bind:field-options="['Lose', 'Maintain', 'Gain']"
+        v-model="goal"
+      ></radio-field>
       <button class="button is-primary is-uppercase has-text-weight-bold">
         Set
       </button>
@@ -191,6 +146,7 @@ export default {
   },
   methods: {
     submit() {
+      console.log(this.goal);
       if (
         !this.gender ||
         !this.age ||
